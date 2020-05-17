@@ -12,6 +12,12 @@ variable "availability_zone" {
   default      = "eu-west-1a"
 }
 
+variable "instance_type" {
+  description  = "Tipo de instancia EC2 con la que vamos a trabajar. Solo se contempla el free tier."
+  type         = string
+  default      = "t2.micro"
+}
+
 variable "main_cidr_block" {
   description  = "La red principal del VPC"
   type         = string
@@ -144,7 +150,7 @@ resource "aws_key_pair" "ssh-vm-igarrido" {
 
 resource "aws_instance" "example" {
   ami                    = "ami-0701e7be9b2a77600"
-  instance_type          = "t2.micro"
+  instance_type          = var.instance_type
   availability_zone      = aws_subnet.tf_book_a_net_public.availability_zone
   subnet_id              = aws_subnet.tf_book_a_net_public.id
   vpc_security_group_ids = [aws_security_group.allow_tcp_8080.id]
